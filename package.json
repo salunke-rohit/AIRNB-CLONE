@@ -1,0 +1,25 @@
+{
+  "name": "airnb-clone",
+  "version": "1.0.0",
+  "description": "\"# Airbnb Clone\"",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salunke-rohit/AIRNB-CLONE.git"
+  },
+  "author": "RohitSalunke",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/salunke-rohit/AIRNB-CLONE/issues"
+  },
+  "homepage": "https://github.com/salunke-rohit/AIRNB-CLONE#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.2.1",
+    "mongoose": "^9.0.2"
+  }
+}
