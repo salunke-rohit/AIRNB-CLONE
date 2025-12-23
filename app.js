@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import path from "path" ;
 import { fileURLToPath } from "url";
+import Listing from "./models/listing.js"
 
 const app = express();
 const port = 3000 ;
@@ -27,6 +28,21 @@ app.get("/" , async (req , res ) =>{
     res.send("hi this is root ");
 });
 
+app.get("/test" , async (req , res)=>{
+    let sample = new Listing ({
+        title:"my new house",
+        description:"with 3bhk in sky manas",
+        price:320000,
+        location:"pune",
+        county:"india"
+    })
+   await sample.save();
+   res.send("succesfull testing")
+console.log("sample was saved");
+
+})
+
 app.listen( port , ()=>{
     console.log(`you are on ${port}`);
 });
+  
