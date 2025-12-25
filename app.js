@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 import Listing from "./models/listing.js"
 
 const app = express();
-const port = 3000 ;
+const port = 8080 ;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,19 +28,10 @@ app.get("/" , async (req , res ) =>{
     res.send("hi this is root ");
 });
 
-app.get("/test" , async (req , res)=>{
-    let sample = new Listing ({
-        title:"my new house",
-        description:"with 3bhk in sky manas",
-        price:320000,
-        location:"pune",
-        county:"india"
-    })
-   await sample.save();
-   res.send("succesfull testing")
-console.log("sample was saved");
-
-})
+app.get("/listing", async (req, res) => {
+    const listings = await Listing.find({});
+    res.render("listings/index", { listings });
+});
 
 app.listen( port , ()=>{
     console.log(`you are on ${port}`);

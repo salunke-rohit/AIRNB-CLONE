@@ -1,27 +1,28 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-  const listingSchema = new mongoose.Schema ({
-    title: {
-        type:String,
-        required:true
+const listingSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+
+  description: String,
+
+  image: {
+    filename: {
+      type: String,
+      default: "listingimage"
     },
+    url: {
+      type: String,
+      default: "https://mycrwork.com/partner/vphotos/NoPhoto.png"
+    }
+  },
 
-    description:String,
-    
-    image: {
-        type:String,
-        default: "https://mycrwork.com/partner/vphotos/NoPhoto.png",
-        set: (v) => 
-        !v || v.length === 0
-        ? "https://mycrwork.com/partner/vphotos/NoPhoto.png"
-        : v
+  price: Number,
+  location: String,
+  country: String
+});
 
-    },
-    price:Number,
-    location:String,
-    county:String
-})        
-
-const Listen = mongoose.model("Listing" , listingSchema);
-
-export default Listen;
+const Listing = mongoose.model("Listing", listingSchema);
+export default Listing;
