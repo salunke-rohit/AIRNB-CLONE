@@ -28,10 +28,18 @@ app.get("/" , async (req , res ) =>{
     res.send("hi this is root ");
 });
 
+// index Route
 app.get("/listing", async (req, res) => {
     const listings = await Listing.find({});
     res.render("listings/index", { listings });
 });
+
+// show Route 
+app.get ("/listing/:id" , async (req , res )=>{
+    let { id} = req.params;
+    const listing = await Listing.findById(id);
+    res.render("listings/show" , {listing})
+})
 
 app.listen( port , ()=>{
     console.log(`you are on ${port}`);
