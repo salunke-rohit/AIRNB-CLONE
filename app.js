@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import path from "path" ;
 import { fileURLToPath } from "url";
 import Listing from "./models/listing.js"
+import methodOverride from "method-override";
+
 
 const app = express();
 const port = 8080 ;
@@ -12,6 +14,11 @@ const __dirname = path.dirname(__filename);
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
+
+
 
 
 async function main() {
@@ -34,11 +41,37 @@ app.get("/listing", async (req, res) => {
     res.render("listings/index", { listings });
 });
 
+// new Route 
+app.get ("/listing/new" , async (req , res )=>{
+    res.render("listings/new")
+})
+
 // show Route 
 app.get ("/listing/:id" , async (req , res )=>{
     let { id} = req.params;
     const listing = await Listing.findById(id);
     res.render("listings/show" , {listing})
+})
+
+// create Route 
+app.post ("/listing" , async (req , res ) =>{
+    const newListing = new Listing (req.body.listing);
+    await newListing.save();
+    res.redirect("/listing");
+})
+
+// edit Route 
+app.get ("/listing/:id/edit" , async (req , res )=>{
+    let { id} = req.params;
+    const listing = await Listing.findById(id);
+    res.render("listings/edit" , {listing} ) ;
+})
+
+//update Route 
+app.put("/listing/:id" , async (req , res)=>{
+    let {id} = req.params;
+    await Listing.findByIdAndUpdate(id , {...req.body.listing});
+    res.redirect(`/listing/${id}`);
 })
 
 app.listen( port , ()=>{
