@@ -4,6 +4,7 @@ import path from "path" ;
 import { fileURLToPath } from "url";
 import Listing from "./models/listing.js"
 import methodOverride from "method-override";
+import ejsMate from "ejs-mate"
 
 
 const app = express();
@@ -14,6 +15,7 @@ const __dirname = path.dirname(__filename);
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.engine("ejs", ejsMate);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
