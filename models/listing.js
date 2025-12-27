@@ -14,9 +14,10 @@ const listingSchema = new mongoose.Schema({
       default: "listingimage"
     },
     url: {
-      type: String,
-      default: "https://mycrwork.com/partner/vphotos/NoPhoto.png"
-    }
+  type: String,
+  default: "https://mycrwork.com/partner/vphotos/NoPhoto.png"
+}
+
   },
 
   price: Number,
