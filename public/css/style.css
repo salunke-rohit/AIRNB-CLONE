@@ -102,3 +102,29 @@ body {
     background-color:#fe424d !important;
     border: none !important;
 }
+
+/* edit Page */
+
+.edit-btn {
+    background-color:#fe424d !important;
+    border: none !important;
+}
+
+/* show Page */
+
+.show-img {
+    height: 30vh;
+} 
+
+.btns {
+    display: flex;
+}
+
+.btns-1 {
+    margin-left: 1rem;
+}
+
+.show-card {
+    padding-left: 0;
+    padding-right: 0;
+}
