@@ -54,10 +54,16 @@ app.get ("/listing/:id" , async (req , res )=>{
 })
 
 // create Route 
-app.post ("/listing" , async (req , res ) =>{
+app.post ("/listing" , async (req , res , next ) =>{
+    try{
     const newListing = new Listing (req.body.listing);
     await newListing.save();
     res.redirect("/listing");
+    }
+    catch(err){
+        next(err);
+    }
+    
 })
 
 // edit Route 
@@ -83,7 +89,14 @@ app.delete("/listing/:id" , async (req , res )=>{
     
 })
 
+// error handler
+app.use((err, req, res, next )=>{
+    console.log("Something went wrong");
+    console.log(err);
+    res.send(`Internal Server Error ${500}`);
+})
+
 app.listen( port , ()=>{
     console.log(`you are on ${port}`);
 });
-  
+   
