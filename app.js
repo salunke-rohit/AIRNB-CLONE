@@ -93,7 +93,7 @@ app.delete("/listing/:id" , async (req , res )=>{
 app.use((err, req, res, next )=>{
     console.log("Something went wrong");
     console.log(err);
-    res.send(`Internal Server Error ${500}`);
+    res.send("Internal Server Error 500");
 })
 
 app.listen( port , ()=>{
