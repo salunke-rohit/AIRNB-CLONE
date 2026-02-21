@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import Listing from "./models/listing.js"
 import methodOverride from "method-override";
 import ejsMate from "ejs-mate"
+import listingSchema from "./Schema.js";
 import wrapAsync from "./utils/wrapAsync.js";
 import ExpressError from "./utils/ExpressError.js";
 
@@ -33,6 +34,16 @@ main().then(()=>{
     console.log("error is = " , err)
 })
 
+const validateListing = (req, res, next) => {
+    const { error } = listingSchema.validate(req.body);
+
+    if (error) {
+        const errMsg = error.details.map(el => el.message).join(",");
+        throw new ExpressError(400, errMsg);
+    }
+
+    next();
+};
 app.get("/" , wrapAsync(async (req , res ) =>{
     res.send("hi this is root ");
 }));
@@ -56,16 +67,12 @@ app.get ("/listing/:id" , wrapAsync ( async (req , res )=>{
 }));
 
 // create Route 
-app.post ("/listing" , wrapAsync ( async (req , res , next ) =>{
-    try{
-    const newListing = new Listing (req.body.listing);
+app.post("/listing", validateListing , wrapAsync(async (req, res, next) => {
+
+    const newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listing");
-    }
-    catch(err){
-        next(err);
-    }
-    
+
 }));
 
 // edit Route 
@@ -76,7 +83,10 @@ app.get ("/listing/:id/edit" , wrapAsync ( async (req , res )=>{
 }));
 
 //update Route 
-app.put("/listing/:id" , wrapAsync ( async (req , res)=>{
+app.put("/listing/:id" , validateListing , wrapAsync ( async (req , res)=>{
+     if (!req.body.listing){
+        throw new ExpressError (400 , "Send valid data for listing!")
+    }
     let {id} = req.params;
     await Listing.findByIdAndUpdate(id , {...req.body.listing});
     res.redirect(`/listing/${id}`);
@@ -97,10 +107,10 @@ app.use((req, res, next )=>{
     next( new ExpressError(404, "page not found! "))
 })
 
-app.use((err, req, res, next )=>{
-    let {statusCode=500 , message="something went wrong!" } = err ;
-    res.status(statusCode).send(message);
-})
+app.use((err, req, res, next) => {
+    let { statusCode = 500 , message="Something went wrong!" } = err;
+    res.status(statusCode).render("error", { message });
+});
 
 app.listen( port , ()=>{
     console.log(`you are on ${port}`);
